@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('GIT CHECKOUT') {
+            steps {
+                git 'https://github.com/sabdulramoni/Projert.git'
+            }
+        }
+         stage('BUILD WITH MAVEN') {
+            steps {
+                sh 'cd SampleWebApp && mvn clean install'
+        }
+         }
+         stage('DEPLOY TO TOMCAT') {
+            steps {
+              deploy adapters: [tomcat9(credentialsId: 'Tomcat-ID', 
+              path: '', url: 'http://3.132.212.114:8080/')], 
+              contextPath: 'myapp', 
+              war: '**/*.war'
+            }
+        }
+    }
+}
