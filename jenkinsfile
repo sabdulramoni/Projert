@@ -7,6 +7,14 @@ pipeline {
                 git 'https://github.com/sabdulramoni/Projert.git'
             }
         }
+        stage("build & SonarQube analysis") {
+            agent any
+            steps {
+              withSonarQubeEnv('My SonarQube Server') {
+                sh 'mvn clean package sonar:sonar'
+              }
+            }
+          }
          stage('BUILD WITH MAVEN') {
             steps {
                 sh 'cd SampleWebApp && mvn clean install'
